@@ -3,7 +3,6 @@ library flutter_radial_button_tool;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_radial_button_tool/clippers/debug_extensions.dart';
 import 'package:flutter_radial_button_tool/clippers/radiating_lines_clipper.dart';
 import 'package:flutter_radial_button_tool/clippers/ring_clipper.dart';
 import 'dart:math' as math;
@@ -145,7 +144,6 @@ class RadialButtonTool extends StatelessWidget {
       sectorWidgets.add(
         _wrapRotation(
           child: ClipPath(
-            // key: ValueKey("button_sector_$i"),
             clipBehavior: clipBehavior,
             clipper: SectorClipper(
               sweepAngle: sectorAngleRad,
@@ -177,7 +175,6 @@ class RadialButtonTool extends StatelessWidget {
   Widget _buildGradient(
       RadialGradient gradient, double outerRadius, double innerRadius) {
     return ClipPath(
-      // key: ValueKey("button_sector_$i"),
       clipBehavior: clipBehavior,
       clipper: RingClipper(
         outerRadius: outerRadius,
