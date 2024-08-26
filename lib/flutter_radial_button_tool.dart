@@ -118,7 +118,7 @@ class RadialButtonTool extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0, bottom: clipChildren ? outerRadius * 2 - thicknessPx : 0),
+                  padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0, bottom: clipChildren ? outerRadius * 2 - thicknessPx - innerBorder * 2: 0),
                   child: rotateChildren
                       ? children[i]
                       : Transform.rotate(
