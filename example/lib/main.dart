@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: (_) {
           setState(() {
             _glow = !_glow;
-            _outerBorder = _glow ? 10 : 2;
+            _outerBorder = _glow ? 8 : 2;
           });
         }),
   ];

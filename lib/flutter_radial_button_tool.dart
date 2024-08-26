@@ -92,9 +92,9 @@ class RadialButtonTool extends StatelessWidget {
 
   double get sectorAngleRad => 2 * math.pi / toolSegments;
 
-  List<Widget> _buildChildren(double outerRadius, double innerRadius) {
+  List<Widget> _buildChildren(double outerRadius, double thicknessPx) {
     List<Widget> icons = [];
-
+    final innerRadius = outerRadius - thicknessPx;
     for (int i = 0; i < toolSegments; i++) {
       final angle = i * sectorAngleRad;
       icons.add(
@@ -118,7 +118,7 @@ class RadialButtonTool extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0),
+                  padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0, bottom: clipChildren ? outerRadius * 2 - thicknessPx : 0),
                   child: rotateChildren
                       ? children[i]
                       : Transform.rotate(
@@ -264,7 +264,7 @@ class RadialButtonTool extends StatelessWidget {
             ),
             ..._buildChildren(
               radius,
-              radius - thicknessPx,
+              thicknessPx,
             ),
             if (centerButton != null)
               _buildCenterButton(
