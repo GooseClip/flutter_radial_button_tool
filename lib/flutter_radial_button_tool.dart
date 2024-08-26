@@ -12,7 +12,7 @@ import 'package:flutter_radial_button_tool/clippers/sector_clipper.dart';
 class RadialButtonTool extends StatelessWidget {
   const RadialButtonTool({
     super.key,
-    required this.colors,
+    required this.foregroundColors,
     required this.backgroundColors,
     required this.children,
     this.backgroundGradient,
@@ -33,7 +33,7 @@ class RadialButtonTool extends StatelessWidget {
 
   /// The colors to be used for the foreground sectors of the tool.
   /// Colors will be repeated if there are more sectors than colors.
-  final List<Color> colors;
+  final List<Color> foregroundColors;
 
   /// The colors to be used for the background sectors of the tool.
   /// Colors will be repeated if there are more sectors than colors.
@@ -252,7 +252,7 @@ class RadialButtonTool extends StatelessWidget {
                     ..._buildSectors(
                       radius - outerBorder,
                       radius - thicknessPx + innerBorder,
-                      colors,
+                      foregroundColors,
                     ),
                     if (foregroundGradient != null)
                       _buildGradient(
