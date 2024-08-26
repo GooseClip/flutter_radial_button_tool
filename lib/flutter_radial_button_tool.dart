@@ -26,6 +26,7 @@ class RadialButtonTool extends StatelessWidget {
     this.centerButton,
     this.clipBehavior = Clip.antiAliasWithSaveLayer,
     this.clipChildren = true,
+    this.rotateChildren = false,
     this.clampCenterButton = true,
   }) : assert(thickness >= 0.1 && thickness <= 1,
             "Thickness must be between 0 and 1");
@@ -72,6 +73,9 @@ class RadialButtonTool extends StatelessWidget {
   /// Whether to clip the children of the sectors to the ring
   final bool clipChildren;
 
+  /// Rotate the children to match the sectors rotation.
+  final bool rotateChildren;
+
   /// Whether to clamp the center button to within the ring.
   final bool clampCenterButton;
 
@@ -88,30 +92,22 @@ class RadialButtonTool extends StatelessWidget {
 
   double get sectorAngleRad => 2 * math.pi / toolSegments;
 
-  Widget _wrapRotation({required Widget child, required double angle}) {
-    return Transform.rotate(
-      angle: angle,
-      child: child,
-    );
-  }
-
   List<Widget> _buildChildren(double outerRadius, double innerRadius) {
     List<Widget> icons = [];
 
     for (int i = 0; i < toolSegments; i++) {
       final angle = i * sectorAngleRad;
       icons.add(
-        _wrapRotation(
-          angle: angle,
+        Transform.rotate(
+          angle: children.length % 2 != 0 ? angle + sectorAngleRad * .5 : angle,
           child: ClipPath(
             clipBehavior: clipBehavior,
             clipper: RadiatingLinesClipper(
                 radius: outerRadius * 2,
                 lines: toolSegments,
                 width: clipChildren ? spacing : spacing - sideBorder * 2,
-                offsetAngle: sectorAngleRad / 2),
+                offsetAngle: children.length % 2 != 0 ? 0 : sectorAngleRad / 2),
             child: ClipPath(
-              // key: ValueKey("button_sector_$i"),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               clipper: SectorClipper(
                 sweepAngle: sectorAngleRad,
@@ -123,7 +119,14 @@ class RadialButtonTool extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Padding(
                   padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0),
-                  child: children[i],
+                  child: rotateChildren
+                      ? children[i]
+                      : Transform.rotate(
+                          angle: (children.length % 2 != 0
+                              ? angle + sectorAngleRad * .5
+                              : angle) * -1,
+                          child: children[i],
+                        ),
                 ),
               ),
             ),
@@ -140,9 +143,10 @@ class RadialButtonTool extends StatelessWidget {
     List<Widget> sectorWidgets = [];
     for (int i = 0; i < toolSegments; i++) {
       final color = colors[i % colors.length];
-      final angle = i * sectorAngleRad;
+      double angle = i * sectorAngleRad;
       sectorWidgets.add(
-        _wrapRotation(
+        Transform.rotate(
+          angle: children.length % 2 != 0 ? angle + sectorAngleRad * .5 : angle,
           child: ClipPath(
             clipBehavior: clipBehavior,
             clipper: SectorClipper(
@@ -152,7 +156,6 @@ class RadialButtonTool extends StatelessWidget {
             ),
             child: Container(color: color),
           ),
-          angle: angle,
         ),
       );
     }
@@ -161,6 +164,9 @@ class RadialButtonTool extends StatelessWidget {
   }
 
   Widget _buildCenterButton(double maxRadius) {
+    if (maxRadius <= 0) {
+      return const SizedBox.shrink();
+    }
     return Center(
       child: SizedBox(
         height: clampCenterButton ? maxRadius : double.infinity,
@@ -262,7 +268,7 @@ class RadialButtonTool extends StatelessWidget {
             ),
             if (centerButton != null)
               _buildCenterButton(
-                diameter - thicknessPx * 2 - spacing * 2,
+                diameter - thicknessPx * 2 - spacing * 2 - innerBorder * 2,
               ),
           ],
         ),
