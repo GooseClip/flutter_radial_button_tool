@@ -1,16 +1,83 @@
-# example
+# flutter_radial_button_tool
 
 An example application of the flutter_radial_botton_tool package
 
-## Getting Started
+## Getting start
 
-This project is a starting point for a Flutter application.
+`flutter pub add flutter_radial_tool_button`
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Dynamic radial button tool for flutter
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://github.com/gooseclip/flutter_radial_button_tool/raw/main/demo.gif">
+
+## Usage
+
+```dart
+import 'package:flutter_radial_button_tool/flutter_radial_button_tool.dart';
+import 'package:example/radial_icon_button.dart';
+
+List<Color> backgroundColors = [
+const Color(0xFF5CED81), // 1
+const Color(0xFF62D5E4), // 2
+const Color(0xFFBB8EF5), // 4
+const Color(0xFFE874B4), // 5
+];
+
+List<Color> foregroundColors = [
+const Color(0xFF2A2E31),
+];
+
+late final List<RadialButton> _children = [
+  RadialIconButton(
+      icon: Icons.add,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+  RadialIconButton(
+      icon: Icons.remove,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+  RadialIconButton(
+      icon: Icons.rotate_left,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+  RadialIconButton(
+      icon: Icons.toggle_off,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+];
+
+RadialButtonTool(
+    thickness: .5,
+    innerBorder: 2,
+    outerBorder: 2,
+    sideBorder: 2,
+    clipChildren: true,
+    clampCenterButton: true,
+    rotateChildren: true,
+    spacing: _spacing,
+    foregroundColors: foregroundColors,
+    backgroundColors: backgroundColors,
+    centerButton: MaterialButton(
+      onPressed: () {
+        reset();
+      },
+      color: const Color(0xFF2A2E31),
+      child: const Icon(
+        Icons.close,
+        color: Colors.white,
+      ),
+    ),
+    children: _children,
+  )
+
+```

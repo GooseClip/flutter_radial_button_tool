@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:example/custom_icon_button.dart';
+import 'package:example/radial_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_radial_button_tool/flutter_radial_button_tool.dart';
@@ -64,28 +62,28 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   late final List<RadialButton> _children = [
-    CustomIconButton(
+    RadialIconButton(
         icon: Icons.add,
         onPressed: (_) {
           setState(() {
             _spacing += 4;
           });
         }).rotatedRadialButton,
-    CustomIconButton(
+    RadialIconButton(
         icon: Icons.remove,
         onPressed: (_) {
           setState(() {
             _spacing -= 4;
           });
-        }).rotatedRadialButton,
-    CustomIconButton(
+      }).rotatedRadialButton,
+    RadialIconButton(
         icon: Icons.rotate_left,
         onPressed: (_) {
           setState(() {
             _rotate = true;
           });
         }).rotatedRadialButton,
-    CustomIconButton(
+    RadialIconButton(
         icon: Icons.toggle_off,
         onPressed: (_) {
           setState(() {

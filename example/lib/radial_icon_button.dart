@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class CustomIconButton extends StatefulWidget {
-  const CustomIconButton({
+class RadialIconButton extends StatefulWidget {
+  const RadialIconButton({
     super.key,
     required this.icon,
     required this.onPressed,
@@ -27,10 +27,10 @@ class CustomIconButton extends StatefulWidget {
   final Color? iconColor;
 
   @override
-  State<CustomIconButton> createState() => _CustomIconButtonState();
+  State<RadialIconButton> createState() => _RadialIconButtonState();
 }
 
-class _CustomIconButtonState extends State<CustomIconButton>
+class _RadialIconButtonState extends State<RadialIconButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController anim;
 
