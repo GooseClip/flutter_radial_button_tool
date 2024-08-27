@@ -63,28 +63,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  late final List<Widget> _children = [
+  late final List<RadialButton> _children = [
     CustomIconButton(
         icon: Icons.add,
         onPressed: (_) {
           setState(() {
             _spacing += 4;
           });
-        }),
+        }).rotatedRadialButton,
     CustomIconButton(
         icon: Icons.remove,
         onPressed: (_) {
           setState(() {
             _spacing -= 4;
           });
-        }),
+        }).rotatedRadialButton,
     CustomIconButton(
         icon: Icons.rotate_left,
         onPressed: (_) {
           setState(() {
             _rotate = true;
           });
-        }),
+        }).rotatedRadialButton,
     CustomIconButton(
         icon: Icons.toggle_off,
         onPressed: (_) {
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             _glow = !_glow;
             _outerBorder = _glow ? 8 : 2;
           });
-        }),
+        }).rotatedRadialButton,
   ];
 
   @override

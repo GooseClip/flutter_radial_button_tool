@@ -9,6 +9,21 @@ import 'dart:math' as math;
 
 import 'package:flutter_radial_button_tool/clippers/sector_clipper.dart';
 
+extension XRadialButton on Widget {
+  RadialButton get radialButton => RadialButton(child: this);
+  RadialButton get rotatedRadialButton => RadialButton(child: this, rotate: true);
+}
+
+class RadialButton {
+  RadialButton({
+    required this.child,
+    this.rotate = false,
+  });
+
+  final Widget child;
+  final bool rotate;
+}
+
 class RadialButtonTool extends StatelessWidget {
   const RadialButtonTool({
     super.key,
@@ -86,7 +101,7 @@ class RadialButtonTool extends StatelessWidget {
   final Clip clipBehavior;
 
   /// The children to be displayed in the sectors.
-  final List<Widget> children;
+  final List<RadialButton> children;
 
   int get toolSegments => children.length;
 
@@ -118,14 +133,14 @@ class RadialButtonTool extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0, bottom: clipChildren ? outerRadius * 2 - thicknessPx - innerBorder * 2: 0),
-                  child: rotateChildren
-                      ? children[i]
+                  padding: EdgeInsets.only(top: clipChildren ? outerBorder : 0, bottom: clipChildren ? outerRadius * 2 - thicknessPx - innerBorder * 2 - 1: 0), // -1 as otherwise tips show unrendered
+                  child: children[i].rotate
+                      ? children[i].child
                       : Transform.rotate(
                           angle: (children.length % 2 != 0
                               ? angle + sectorAngleRad * .5
                               : angle) * -1,
-                          child: children[i],
+                          child: children[i].child,
                         ),
                 ),
               ),
