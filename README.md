@@ -1,23 +1,82 @@
+# flutter_radial_button_tool 
+
+## Getting start
+
+`flutter pub add flutter_radial_tool_button`
+
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+Dynamic radial button tool for flutter
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+<img src="https://github.com/gooseclip/flutter_radial_button_tool/raw/main/demo.gif">
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:flutter_radial_button_tool/flutter_radial_button_tool.dart';
+import 'package:example/radial_icon_button.dart';
+
+List<Color> backgroundColors = [
+const Color(0xFF5CED81), // 1
+const Color(0xFF62D5E4), // 2
+const Color(0xFFBB8EF5), // 4
+const Color(0xFFE874B4), // 5
+];
+
+List<Color> foregroundColors = [
+const Color(0xFF2A2E31),
+];
+
+late final List<RadialButton> _children = [
+  RadialIconButton(
+      icon: Icons.add,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+  RadialIconButton(
+      icon: Icons.remove,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+  RadialIconButton(
+      icon: Icons.rotate_left,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+  RadialIconButton(
+      icon: Icons.toggle_off,
+      onPressed: (_) {
+        setState(() {
+        });
+      }).rotatedRadialButton,
+];
+
+RadialButtonTool(
+    thickness: .5,
+    innerBorder: 2,
+    outerBorder: 2,
+    sideBorder: 2,
+    clipChildren: true,
+    clampCenterButton: true,
+    rotateChildren: true,
+    spacing: _spacing,
+    foregroundColors: foregroundColors,
+    backgroundColors: backgroundColors,
+    centerButton: MaterialButton(
+      onPressed: () {
+        reset();
+      },
+      color: const Color(0xFF2A2E31),
+      child: const Icon(
+        Icons.close,
+        color: Colors.white,
+      ),
+    ),
+    children: _children,
+  )
+
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
