@@ -4,7 +4,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_radial_button_tool/clippers/radiating_lines_clipper.dart';
-import 'package:flutter_radial_button_tool/clippers/ring_clipper.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_radial_button_tool/clippers/sector_clipper.dart';
@@ -32,6 +31,10 @@ class RadialButtonTool extends StatelessWidget {
     required this.children,
     this.backgroundGradient,
     this.foregroundGradient,
+    this.backgroundOuterCornerRadius = 0,
+    this.backgroundInnerCornerRadius = 0,
+    this.foregroundOuterCornerRadius = 0,
+    this.foregroundInnerCornerRadius = 0,
     this.innerBorder = 2,
     this.outerBorder = 2,
     this.sideBorder = 2,
@@ -103,6 +106,18 @@ class RadialButtonTool extends StatelessWidget {
   /// The children to be displayed in the sectors.
   final List<RadialButton> children;
 
+  /// The outer radius of the background.
+  final double backgroundOuterCornerRadius;
+
+  /// The inner radius of the background.
+  final double backgroundInnerCornerRadius;
+
+  /// The outer radius of the foreground.
+  final double foregroundOuterCornerRadius;
+
+  /// The inner radius of the foreground.
+  final double foregroundInnerCornerRadius;
+
   int get toolSegments => children.length;
 
   double get sectorAngleRad => 2 * math.pi / toolSegments;
@@ -125,6 +140,8 @@ class RadialButtonTool extends StatelessWidget {
             child: ClipPath(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               clipper: SectorClipper(
+                outerCornerRadius: foregroundOuterCornerRadius,
+                innerCornerRadius: foregroundInnerCornerRadius,
                 sweepAngle: sectorAngleRad,
                 innerRadius: clipChildren ? innerRadius + innerBorder : 0,
                 outerRadius:
@@ -154,7 +171,12 @@ class RadialButtonTool extends StatelessWidget {
   }
 
   List<Widget> _buildSectors(
-      double outerRadius, double innerRadius, List<Color> colors) {
+    double outerRadius,
+    double innerRadius,
+    List<Color> colors, {
+    required double outerCornerRadius,
+    required double innerCornerRadius,
+  }) {
     List<Widget> sectorWidgets = [];
     for (int i = 0; i < toolSegments; i++) {
       final color = colors[i % colors.length];
@@ -165,6 +187,8 @@ class RadialButtonTool extends StatelessWidget {
           child: ClipPath(
             clipBehavior: clipBehavior,
             clipper: SectorClipper(
+              outerCornerRadius: outerCornerRadius,
+              innerCornerRadius: innerCornerRadius,
               sweepAngle: sectorAngleRad,
               innerRadius: innerRadius,
               outerRadius: outerRadius,
@@ -193,20 +217,40 @@ class RadialButtonTool extends StatelessWidget {
     );
   }
 
-  Widget _buildGradient(
-      RadialGradient gradient, double outerRadius, double innerRadius) {
-    return ClipPath(
-      clipBehavior: clipBehavior,
-      clipper: RingClipper(
-        outerRadius: outerRadius,
-        innerRadius: innerRadius,
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: gradient,
+  List<Widget> _buildGradientSectors(
+    RadialGradient gradient,
+    double outerRadius,
+    double innerRadius, {
+    required double outerCornerRadius,
+    required double innerCornerRadius,
+  }) {
+    final sectorWidgets = <Widget>[];
+    for (int i = 0; i < toolSegments; i++) {
+      final angle = children.length % 2 != 0
+          ? i * sectorAngleRad + sectorAngleRad * .5
+          : i * sectorAngleRad;
+      sectorWidgets.add(
+        Transform.rotate(
+          angle: angle,
+          child: ClipPath(
+            clipBehavior: clipBehavior,
+            clipper: SectorClipper(
+              outerCornerRadius: outerCornerRadius,
+              innerCornerRadius: innerCornerRadius,
+              sweepAngle: sectorAngleRad,
+              innerRadius: innerRadius,
+              outerRadius: outerRadius,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: gradient,
+              ),
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    }
+    return sectorWidgets;
   }
 
   @override
@@ -237,12 +281,16 @@ class RadialButtonTool extends StatelessWidget {
                       radius,
                       radius - thicknessPx,
                       backgroundColors,
+                      outerCornerRadius: backgroundOuterCornerRadius,
+                      innerCornerRadius: backgroundInnerCornerRadius,
                     ),
                     if (backgroundGradient != null)
-                      _buildGradient(
+                      ..._buildGradientSectors(
                         backgroundGradient!,
                         radius,
                         radius - thicknessPx,
+                        outerCornerRadius: backgroundOuterCornerRadius,
+                        innerCornerRadius: backgroundInnerCornerRadius,
                       ),
                   ]),
             ),
@@ -268,12 +316,16 @@ class RadialButtonTool extends StatelessWidget {
                       radius - outerBorder,
                       radius - thicknessPx + innerBorder,
                       foregroundColors,
+                      outerCornerRadius: foregroundOuterCornerRadius,
+                      innerCornerRadius: foregroundInnerCornerRadius,
                     ),
                     if (foregroundGradient != null)
-                      _buildGradient(
+                      ..._buildGradientSectors(
                         foregroundGradient!,
                         radius - outerBorder,
                         radius - thicknessPx + innerBorder,
+                        outerCornerRadius: foregroundOuterCornerRadius,
+                        innerCornerRadius: foregroundInnerCornerRadius,
                       ),
                   ]),
             ),

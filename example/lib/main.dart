@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const Color(0xFF2A2E31),
   ];
 
-  double _spacing = 8;
+  double _spacing = 10;
   double _thickness = 0.5;
   bool _glow = true;
   bool _rotate = false;
@@ -114,6 +114,10 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 200,
           child: RadialButtonTool(
             thickness: _thickness,
+            backgroundOuterCornerRadius: 8,
+            backgroundInnerCornerRadius: 4,
+            foregroundOuterCornerRadius: 24,
+            foregroundInnerCornerRadius: 16,
             innerBorder: 2,
             outerBorder: _outerBorder,
             sideBorder: 2,
@@ -121,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
             clampCenterButton: true,
             rotateChildren: false,
             foregroundGradient: exampleGradient,
-            glow: _glow ? 8 : 0,
+            glow: _glow ? 2 : 0,
             spacing: _spacing,
             foregroundColors: foregroundColors,
             // colors: const [
